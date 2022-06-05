@@ -1,6 +1,11 @@
 interface Message {
-  room: string;
-  author: string;
+  server: string;
+  username: string;
   message: string;
   time: string;
+}
+
+interface Server {
+  id: string;
+  displayName: string;
 }
