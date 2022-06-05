@@ -15,16 +15,24 @@ const io = new Server(server, {
   }
 });
 
+let lastServer = '';
+
 io.on('connection', (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
-  socket.on('join_room', (data) => {
+  socket.on('join', (data) => {
+    if (lastServer !== '') {
+      socket.leave(lastServer);
+      console.log(`User with ID: ${socket.id} left server: ${data}`);
+    } else {
+      lastServer = data;
+    }
     socket.join(data);
-    console.log(`User with ID: ${socket.id} joined room: ${data}`);
+    console.log(`User with ID: ${socket.id} joined server: ${data}`);
   });
 
   socket.on('send_message', (data) => {
-    socket.to(data.room).emit('receive_message', data);
+    socket.to(data.server).emit('receive_message', data);
   });
 
   socket.on('disconnect', () => {
