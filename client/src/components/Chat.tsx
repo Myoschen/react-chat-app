@@ -1,14 +1,15 @@
 import moment from "moment";
+import {ChevronRightIcon} from '@heroicons/react/outline';
 import { useEffect, useState, useRef } from "react";
 import { Socket } from "socket.io-client"
 
 interface ChatProps {
   socket: Socket;
   username: string;
-  room: string;
+  server: Server | null;
 }
 
-function Chat({ socket, username, room }: ChatProps) {
+function Chat({ socket, username, server }: ChatProps) {
   const [messageList, setMessageList] = useState<Message[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');  
   const messageEndRef = useRef<HTMLDivElement | null>(null);
@@ -18,6 +19,10 @@ function Chat({ socket, username, room }: ChatProps) {
       setMessageList((list) => [...list, data]);
     });
   }, [socket]);
+
+  useEffect(() => {
+    setMessageList([]);
+  }, [server]);
 
   useEffect(() => {
     scrollToBottom();
@@ -35,10 +40,10 @@ function Chat({ socket, username, room }: ChatProps) {
    * to the server and add it to the message list.
    */
   const sendMessage = async () => {
-    if (currentMessage !== '') {
+    if (currentMessage !== '' && server) {
       const messageData: Message = {
-        room: room,
-        author: username,
+        server: server.id,
+        username: username,
         message: currentMessage,
         time: moment().format('h:mm'),
       };
@@ -50,25 +55,29 @@ function Chat({ socket, username, room }: ChatProps) {
   }
 
   return (
-    <div className="w-80 shadow-lg">
-      <div className="bg-custom-dark text-white py-4 rounded-t-md">
-        <p className="text-2xl text-center font-bold">Live Chat</p>
+    <div className="flex flex-col grow">
+      <div className="py-8 text-white bg-custom-dark">
+        <p className="text-2xl font-bold text-center">
+          {
+            server?.displayName !== '' ? server?.displayName : 'You have to join room!' 
+          }
+        </p>
       </div>
-      <div className="h-80 flex flex-col gap-4 p-4 bg-gray-200 overflow-y-scroll">
+      <div className="flex flex-col gap-4 p-4 overflow-y-scroll bg-gray-200 grow">
         {
-          messageList.map((message) => {
-            return message.author !== username 
+          messageList.map((message, index) => {
+            return message.username !== username 
               ? (
-                <div key={message.time} className="self-start flex flex-col">
-                  <span className="font-bold">{message.author}</span>
-                  <span className="bg-white py-2 px-3 rounded-md my-2 break-all">{message.message}</span>
+                <div key={index} className="flex flex-col self-start">
+                  <span className="font-bold">{message.username}</span>
+                  <span className="px-3 py-2 my-2 break-all bg-white rounded-md">{message.message}</span>
                   <span className="text-xs text-gray-500">{message.time}</span>
                 </div>
               )
               : (
-                <div key={message.time} className="self-end flex flex-col items-end">
-                  <span className="font-bold">{message.author}</span>
-                  <span className="bg-white py-2 px-3 rounded-md my-2 break-all">{message.message}</span>
+                <div key={index} className="flex flex-col items-end self-end">
+                  <span className="font-bold">{message.username}</span>
+                  <span className="px-3 py-2 my-2 break-all bg-white rounded-md">{message.message}</span>
                   <span className="text-xs text-gray-500">{message.time}</span>
                 </div>
               );
@@ -76,26 +85,27 @@ function Chat({ socket, username, room }: ChatProps) {
         }
         <div ref={messageEndRef}/>
       </div>
-      <div className="flex rounded-b-md">
+      <div className="flex overflow-hidden rounded-b-md">
         <input 
-          className="w-full text-xl px-4 focus:outline-none"
+          className="w-full px-4 text-xl focus:outline-none"
           type="text" 
           placeholder="text..."
           value={currentMessage}
           onChange={(event) => {
             setCurrentMessage(event.target.value);
           }}
+          onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
         />
         <button 
-          className="p-4 hover:bg-gray-200 duration-300 font-black"
+          className="p-4 font-black duration-300 hover:bg-gray-200"
           type="button" 
           onClick={sendMessage}
         >
-          &gt;
+          <ChevronRightIcon width={20}/>
         </button>
       </div>
     </div>
   )
 }
 
-export default Chat
+export default Chat;
