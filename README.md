@@ -1,18 +1,40 @@
 # react-chat-app
 
-> Build a realtime chat app with React, Socket.io.
+> Build a realtime chat app with React, Socket.io, MongoDB Atlas.
 
-## How to start !?
+## Log
 
-todo...
+HackMD: <https://hackmd.io/@willy14620/react-chat-app>
 
 ## Demo
 
-todo...
+More to come...
 
-## Todo
+## How to run
 
-- [ ] Function to send images.
-- [ ] Function to create chat groups.
-- [ ] Store messages and groups into MongoDB Atlas.
+> Download this project to your PC.
+
+- Server side
+
+  ```ps
+  npm install
+  npm run start 
+  ```
+
+- Client side
+
+  ```ps
+  npm install
+  npm run start 
+  ```
+
+## Upcoming Features
+
+- [ ] Sign in and sign up functions.
+- [ ] Basic chat features.
+- [ ] Function to send image.
+- [ ] Function to create servers.
+- [ ] Function to create channels.
+- [ ] Displays online users for each server.
+- [ ] Store messages, channels and servers into MongoDB Atlas.
 - [ ] Function to communicate in real time via voice. (Extra features)
