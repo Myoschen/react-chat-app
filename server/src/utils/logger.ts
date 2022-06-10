@@ -1,14 +1,14 @@
-import colors from 'colors';
+import pino from 'pino';
+import pretty from 'pino-pretty';
+import dayjs from 'dayjs';
 
-colors.setTheme({
-  silly: 'rainbow',
-  input: 'grey',
-  verbose: 'cyan',
-  prompt: 'grey',
-  info: 'green',
-  data: 'grey',
-  help: 'cyan',
-  warn: 'yellow',
-  debug: 'blue',
-  error: 'red'
+const stream = pretty({
+  colorize: true,
 });
+
+const logger = pino({
+  base: undefined,
+  timestamp: () => `,"time":"${dayjs().format()}"`,
+}, stream);
+
+export default logger;
