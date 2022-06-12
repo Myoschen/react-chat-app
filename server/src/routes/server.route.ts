@@ -1,10 +1,12 @@
 import { Router } from "express";
+import controller from "../controllers/server.controller";
 
-const serverRouter = Router();
+const router = Router();
 
-serverRouter.route('/')
-  .get((req, res) => {
-    res.send('Server Route');
-  });
+router.route('/')
+  .post(controller.createServer);
 
-export default serverRouter;
+router.route('/:serverId')
+  .get(controller.findServer);
+
+export default router;

@@ -1,10 +1,14 @@
 import { Router } from "express";
+import controller from '../controllers/user.controller';
 
-const userRouter = Router();
+const router = Router();
 
-userRouter.route('/')
-  .get((req, res) => {
-    res.send('User Route');
-  });
+router.route('/')
+  .post(controller.createUser);
 
-export default userRouter;
+router.route('/:userId')
+  .get(controller.findUser);
+
+router.post('/login', controller.login);
+
+export default router;
