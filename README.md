@@ -2,10 +2,6 @@
 
 > Build a realtime chat app with React, Socket.io, MongoDB Atlas.
 
-## Log
-
-HackMD: <https://hackmd.io/@willy14620/react-chat-app>
-
 ## Demo
 
 More to come...
@@ -17,14 +13,14 @@ More to come...
 - Server side
 
   ```ps
-  npm install
+  npm ci
   npm run start 
   ```
 
 - Client side
 
   ```ps
-  npm install
+  npm ci
   npm run start 
   ```
 
