@@ -6,21 +6,37 @@
 
 More to come...
 
-## How to run
+## Install
 
-> Download this project to your PC.
+```ps
+# Clone this project to your environment
+git clone https://github.com/Myoschen/react-chat-app.git
 
-- Server side
+# Change directory to this project
+cd react-chat-app/
+```
+
+## Usage
+
+### Server side
 
   ```ps
+  cd server/
+  
+  # Download required dependencies
   npm ci
-  npm run start 
+
+  npm run start
   ```
 
-- Client side
+### Client side
 
   ```ps
+  cd client/
+
+  # Download required dependencies
   npm ci
+
   npm run start 
   ```
 
